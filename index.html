@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineAvalia - Projeto Completo de Avaliação de Filmes</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              500: '#7c3aed',
+              600: '#6d28d9',
+              700: '#5b21b6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- NAVBAR COMPLETA -->
+  <header class="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navegarPara('home')">
+        <div class="w-10 h-10 bg-brand-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/20">
+          <i class="fa-solid fa-clapperboard"></i>
+        </div>
+        <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-brand-500 bg-clip-text text-transparent">CineAvalia</span>
+      </div>
+
+      <!-- Navegação dinâmica por botões de simulação -->
+      <nav class="flex items-center gap-2 sm:gap-4 text-sm font-medium">
+        <button onclick="navegarPara('home')" class="px-3 py-1.5 rounded-md hover:bg-zinc-800 transition">Início</button>
+        <button onclick="navegarPara('perfil')" class="px-3 py-1.5 rounded-md hover:bg-zinc-800 transition">Meu Perfil</button>
+        <button onclick="navegarPara('admin')" class="px-3 py-1.5 rounded-md bg-purple-900/40 text-purple-300 border border-purple-700/50 hover:bg-purple-900/60 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-shield-halved text-xs"></i> Admin
+        </button>
+        <div class="h-4 w-px bg-zinc-700 mx-1"></div>
+        <button onclick="navegarPara('login')" class="px-3 py-1.5 rounded-md hover:bg-zinc-800 transition">Entrar</button>
+        <button onclick="navegarPara('cadastro')" class="px-3 py-1.5 rounded-md bg-brand-600 hover:bg-brand-500 text-white transition">Cadastrar</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL (SPA: Alternância de Telas) -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
+
+    <!-- 1. TELA PRINCIPAL (HOME: FILMES RECENTES E MELHORES AVALIADOS) -->
+    <section id="view-home" class="space-y-12">
+      <!-- Banner Sincronização -->
+      <div class="bg-gradient-to-r from-brand-900/40 to-zinc-900 p-6 rounded-2xl border border-brand-500/20 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-bold text-white mb-1">Catálogo Oficial em Cartaz (TMDB)</h1>
+          <p class="text-zinc-400 text-sm">Consulte os lançamentos mais recentes e avalie os títulos que você já assistiu.</p>
+        </div>
+        <button onclick="navegarPara('admin')" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-lg text-sm text-zinc-300 transition flex items-center gap-2 shrink-0">
+          <i class="fa-solid fa-arrows-rotate"></i> Gerenciar Catálogo
+        </button>
+      </div>
+
+      <!-- Mais Recentes (DATA_ESTREIA DESC) -->
+      <div>
+        <div class="flex items-center gap-2 mb-6">
+          <i class="fa-solid fa-calendar-days text-brand-500 text-lg"></i>
+          <h2 class="text-xl font-bold">Lançamentos Recentes em Cartaz</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <!-- Card 1 -->
+          <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-lg hover:border-zinc-700 transition flex flex-col">
+            <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=80" alt="Duna 2" class="w-full h-72 object-cover">
+            <div class="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Estreia: 24/10/2026</span>
+                <h3 class="font-bold text-lg text-white mt-1">Duna: Parte Dois</h3>
+                <p class="text-zinc-400 text-sm line-clamp-2 mt-1">Paul Atreides se une a Chani e aos Fremen em busca de vingança contra os conspiradores que destruíram sua família.</p>
+              </div>
+              <button onclick="verDetalhes('Duna: Parte Dois', 'Paul Atreides se une a Chani e aos Fremen em busca de vingança contra os conspiradores que destruíram sua família.', '24/10/2026', 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=80')" class="mt-4 w-full py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-sm font-medium transition text-center">
+                Ver Avaliações & Avaliar
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-lg hover:border-zinc-700 transition flex flex-col">
+            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80" alt="Oppenheimer" class="w-full h-72 object-cover">
+            <div class="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Estreia: 15/10/2026</span>
+                <h3 class="font-bold text-lg text-white mt-1">Oppenheimer</h3>
+                <p class="text-zinc-400 text-sm line-clamp-2 mt-1">A história do cientista americano J. Robert Oppenheimer e seu papel fundamental no desenvolvimento da bomba atômica.</p>
+              </div>
+              <button onclick="verDetalhes('Oppenheimer', 'A história do cientista americano J. Robert Oppenheimer e seu papel fundamental no desenvolvimento da bomba atômica.', '15/10/2026', 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80')" class="mt-4 w-full py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-sm font-medium transition text-center">
+                Ver Avaliações & Avaliar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Melhores Avaliados (ORDENADOS PELA NOTA) -->
+      <div>
+        <div class="flex items-center gap-2 mb-6">
+          <i class="fa-solid fa-star text-amber-400 text-lg"></i>
+          <h2 class="text-xl font-bold">Top Melhores Avaliados pelo Público</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-lg flex flex-col p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-amber-400 flex items-center gap-1 bg-amber-400/10 px-2.5 py-1 rounded-full">
+                <i class="fa-solid fa-star"></i> 9.6 / 10
+              </span>
+              <span class="text-xs text-zinc-500">42 avaliações</span>
+            </div>
+            <h3 class="font-bold text-lg text-white">Duna: Parte Dois</h3>
+            <p class="text-zinc-400 text-xs mt-1">Considerada uma das maiores obras de ficção científica dos cinemas recentes.</p>
+            <button onclick="navegarPara('detalhes')" class="mt-4 py-2 border border-zinc-700 hover:bg-zinc-800 rounded-lg text-xs font-semibold transition">
+              Ler Opiniões
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. TELA DE DETALHES DO FILME & FORMULÁRIO DE AVALIAÇÃO -->
+    <section id="view-detalhes" class="hidden space-y-8">
+      <button onclick="navegarPara('home')" class="text-sm text-zinc-400 hover:text-white flex items-center gap-2">
+        <i class="fa-solid fa-arrow-left"></i> Voltar ao catálogo
+      </button>
+
+      <!-- Banner do Filme -->
+      <div class="flex flex-col md:flex-row gap-6 bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
+        <img id="detalhe-poster" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=80" alt="Poster" class="w-full md:w-56 h-80 object-cover rounded-xl shadow-md">
+        <div class="flex-1 flex flex-col justify-between">
+          <div>
+            <h1 id="detalhe-titulo" class="text-3xl font-extrabold text-white">Duna: Parte Dois</h1>
+            <p id="detalhe-data" class="text-sm text-brand-400 mt-1 font-medium">Estreia: 24/10/2026</p>
+            <p id="detalhe-desc" class="text-zinc-300 text-sm mt-4 leading-relaxed">
+              Paul Atreides se une a Chani e aos Fremen em busca de vingança contra os conspiradores que destruíram sua família. Diante de uma escolha entre o amor de sua vida e o destino do universo, ele deve evitar um futuro terrível que só ele pode prever.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-4">
+            <span class="text-2xl font-black text-amber-400 flex items-center gap-2">
+              <i class="fa-solid fa-star text-xl"></i> 9.4
+            </span>
+            <span class="text-sm text-zinc-400">Média geral baseada na comunidade</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulário de Avaliação (Usuário Comum) -->
+      <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
+        <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-pen-nib text-brand-500"></i> Avaliar este Filme
+        </h3>
+        <p class="text-xs text-zinc-400 mb-4">Compartilhe sua nota e sua opinião com os outros usuários.</p>
+        <form onsubmit="adicionarComentario(event)" class="space-y-4">
+          <div class="w-48">
+            <label class="block text-xs font-semibold uppercase text-zinc-400 mb-1">Nota (0 a 10)</label>
+            <input type="number" id="input-nota" min="0" max="10" step="0.5" required placeholder="Ex: 9.5" class="w-full px-3 py-2 bg-zinc-950 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-brand-500 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-zinc-400 mb-1">Comentário</label>
+            <textarea id="input-comentario" rows="3" required placeholder="O que você achou das atuações, roteiro e efeitos visuais?" class="w-full px-3 py-2 bg-zinc-950 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-brand-500 text-sm"></textarea>
+          </div>
+          <button type="submit" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-sm font-semibold transition">
+            Publicar Avaliação
+          </button>
+        </form>
+      </div>
+
+      <!-- Lista de Avaliações / Comentários -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-bold text-white">Comentários e Notas dos Usuários</h3>
+        <div id="lista-comentarios" class="space-y-3">
+          <!-- Item de Comentário com botão de denunciar -->
+          <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-sm text-zinc-200">Carlos Silva</span>
+              <span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded">Nota: 10 / 10</span>
+            </div>
+            <p class="text-zinc-300 text-sm leading-relaxed">Simplesmente espetacular. Visualmente impressionante e com um ritmo perfeito.</p>
+            <div class="flex justify-end pt-2 border-t border-zinc-800/80">
+              <button onclick="alert('Comentário marcado como ofensivo para análise do Administrador.')" class="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1">
+                <i class="fa-regular fa-flag"></i> Sinalizar como ofensivo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TELA DE PERFIL DO USUÁRIO -->
+    <section id="view-perfil" class="hidden space-y-8">
+      <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-full bg-brand-700 flex items-center justify-center text-white text-2xl font-bold">
+            JC
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold text-white">José Cordeiro</h1>
+            <p class="text-zinc-400 text-sm">Perfil: <span class="text-brand-400 font-semibold">Comum</span> • Status: <span class="text-emerald-400 font-semibold">Ativo</span></p>
+          </div>
+        </div>
+        <div class="bg-zinc-950 border border-zinc-800 px-6 py-4 rounded-xl text-center">
+          <span class="block text-3xl font-extrabold text-white">8</span>
+          <span class="text-xs text-zinc-400 uppercase tracking-wide">Avaliações Realizadas</span>
+        </div>
+      </div>
+
+      <!-- Alterar Senha Própria -->
+      <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
+        <h3 class="text-lg font-bold text-white mb-2">Alterar Minha Senha</h3>
+        <form onsubmit="event.preventDefault(); alert('Senha alterada com sucesso!');" class="max-w-md space-y-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-zinc-400 mb-1">Nova Senha</label>
+            <input type="password" required placeholder="Digite sua nova senha" class="w-full px-3 py-2 bg-zinc-950 border border-zinc-700 rounded-lg text-white text-sm">
+          </div>
+          <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-sm font-semibold transition">
+            Atualizar Senha
+          </button>
+        </form>
+      </div>
+
+      <!-- Listas: Filmes Já Avaliados vs Filmes Não Avaliados -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
+          <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-check text-emerald-400"></i> Filmes que você JÁ avaliou
+          </h3>
+          <ul class="space-y-3 text-sm">
+            <li class="flex items-center justify-between p-2 rounded bg-zinc-950 border border-zinc-800">
+              <span>Duna: Parte Dois</span>
+              <span class="text-amber-400 font-bold text-xs">Nota 9.5</span>
+            </li>
+            <li class="flex items-center justify-between p-2 rounded bg-zinc-950 border border-zinc-800">
+              <span>Oppenheimer</span>
+              <span class="text-amber-400 font-bold text-xs">Nota 10.0</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
+          <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-clock text-amber-400"></i> Filmes que você AINDA NÃO avaliou
+          </h3>
+          <ul class="space-y-3 text-sm">
+            <li class="flex items-center justify-between p-2 rounded bg-zinc-950 border border-zinc-800">
+              <span>Pobres Criaturas</span>
+              <button onclick="navegarPara('detalhes')" class="text-xs text-brand-400 hover:underline">Avaliar agora</button>
+            </li>
+            <li class="flex items-center justify-between p-2 rounded bg-zinc-950 border border-zinc-800">
+              <span>Wonka</span>
+              <button onclick="navegarPara('detalhes')" class="text-xs text-brand-400 hover:underline">Avaliar agora</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PAINEL DO ADMINISTRADOR -->
+    <section id="view-admin" class="hidden space-y-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-white">Painel do Administrador</h1>
+          <p class="text-zinc-400 text-sm">Gestão de catálogo, controle de usuários e moderação de conteúdo.</p>
+        </div>
+      </div>
+
+      <!-- 1. Atualizar Lista de Filmes (TMDB) -->
+      <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-white">1. Atualizar Filmes em Cartaz</h3>
+          <p class="text-xs text-zinc-400 mt-1">Executa uma requisição direta para a API do TMDB e atualiza o banco local.</p>
+        </div>
+        <button onclick="alert('Filmes sincronizados com o catálogo oficial do The Movie Database!');" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-sm font-semibold transition flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Agora
+        </button>
+      </div>
+
+      <!-- 2. Moderação de Avaliações Ofensivas -->
+      <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
+        <h3 class="font-bold text-white mb-2">2. Verificação de Avaliações Ofensivas (Alerta Ativo)</h3>
+        <p class="text-xs text-zinc-400 mb-4">Comentários marcados por outros usuários aguardando auditoria do administrador.</p>
+        
+        <div class="space-y-3">
+          <div class="p-4 bg-zinc-950 border border-rose-900/40 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold text-rose-400 flex items-center gap-1 mb-1">
+                <i class="fa-solid fa-triangle-exclamation"></i> Sinalizado por usuário
+              </span>
+              <p class="text-sm text-zinc-200">"Filme horrível, o diretor deveria sumir e todo mundo que assiste é burro!"</p>
+              <span class="text-xs text-zinc-500">Autor: Marcos Lopes (ID: 3) • Filme: Oppenheimer</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="alert('Avaliação confirmada como ofensiva e removida do ar.'); this.closest('div.p-4').remove();" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded transition">
+                Confirmar Ofensa (Excluir)
+              </button>
+              <button onclick="alert('Alerta descartado como falso positivo.'); this.closest('div.p-4').remove();" class="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs rounded transition">
+                Descartar Alerta
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Gerenciamento de Usuários (Bloqueio e Reset de Senha) -->
+      <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
+        <h3 class="font-bold text-white mb-4">3. Controle de Usuários Cadastrados</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm text-zinc-300">
+            <thead class="bg-zinc-950 uppercase text-xs text-zinc-400 border-b border-zinc-800">
+              <tr>
+                <th class="p-3">ID</th>
+                <th class="p-3">Nome</th>
+                <th class="p-3">E-mail</th>
+                <th class="p-3">Perfil</th>
+                <th class="p-3">Status</th>
+                <th class="p-3 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-800">
+              <tr>
+                <td class="p-3 font-mono text-xs">1</td>
+                <td class="p-3 font-medium text-white">José Gustavo Cordeiro</td>
+                <td class="p-3">jose@email.com</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded text-xs bg-purple-900/50 text-purple-300 border border-purple-700">ADMIN</span></td>
+                <td class="p-3 text-emerald-400 text-xs font-semibold">Ativo</td>
+                <td class="p-3 text-right">-</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-xs">2</td>
+                <td class="p-3 font-medium text-white">Marcos Silva</td>
+                <td class="p-3">marcos@email.com</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded text-xs bg-zinc-800 text-zinc-300">COMUM</span></td>
+                <td id="status-user-2" class="p-3 text-emerald-400 text-xs font-semibold">Ativo</td>
+                <td class="p-3 text-right space-x-2">
+                  <button onclick="alternarBloqueio(2)" class="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-xs rounded transition">
+                    Bloquear / Desbloquear
+                  </button>
+                  <button onclick="resetarSenhaAleatoria('Marcos Silva')" class="px-2.5 py-1 bg-amber-600/30 text-amber-300 border border-amber-600/50 hover:bg-amber-600/50 text-xs rounded transition">
+                    Resetar Senha
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. TELA DE LOGIN -->
+    <section id="view-login" class="hidden max-w-md mx-auto my-12 bg-zinc-900 border border-zinc-800 p-8 rounded-2xl shadow-xl">
+      <h2 class="text-2xl font-bold text-white mb-2">Entrar na Conta</h2>
+      <p class="text-sm text-zinc-400 mb-6">Acesse para avaliar filmes e consultar seu histórico.</p>
+      <form onsubmit="event.preventDefault(); navegarPara('home');" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase text-zinc-400 mb-1">E-mail</label>
+          <input type="email" required placeholder="seu@email.com" class="w-full px-3 py-2 bg-zinc-950 border border-zinc-700 rounded-lg text-white text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase text-zinc-400 mb-1">Senha</label>
+          <input type="password" required placeholder="Sua senha secreta" class="w-full px-3 py-2 bg-zinc-950 border border-zinc-700 rounded-lg text-white text-sm">
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-lg text-sm transition">
+          Fazer Login
+        </button>
+      </form>
+      <p class="text-center text-xs text-zinc-500 mt-6">Ainda não tem conta? <button onclick="navegarPara('cadastro')" class="text-brand-400 hover:underline">Cadastre-se</button></p>
+    </section>
+
+    <!-- 6. TELA DE CADASTRO -->
+    <section id="view-cadastro" class="hidden max-w-md mx-auto my-12 bg-zinc-900 border border-zinc-800 p-8 rounded-2xl shadow-xl">
+      <h2 class="text-2xl font-bold text-white mb-2">Criar Nova Conta</h2>
+      <p class="text-sm text-zinc-400 mb-6">Cadastre-se para participar da comunidade de cinéfilos.</p>
+      <form onsubmit="event.preventDefault(); alert('Cadastro efetuado!'); navegarPara('login');" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase text-zinc-400 mb-1">Nome Completo</label>
+          <input type="text" required placeholder="Seu nome" class="w-full px-3 py-2 bg-zinc-950 border border-zinc-700 rounded-lg text-white text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase text-zinc-400 mb-1">E-mail</label>
+          <input type="email" required placeholder="seu@email.com" class="w-full px-3 py-2 bg-zinc-950 border border-zinc-700 rounded-lg text-white text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase text-zinc-400 mb-1">Senha</label>
+          <input type="password" required placeholder="Crie uma senha forte" class="w-full px-3 py-2 bg-zinc-950 border border-zinc-700 rounded-lg text-white text-sm">
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-lg text-sm transition">
+          Confirmar Cadastro
+        </button>
+      </form>
+      <p class="text-center text-xs text-zinc-500 mt-6">Já possui conta? <button onclick="navegarPara('login')" class="text-brand-400 hover:underline">Faça login</button></p>
+    </section>
+
+  </main>
+
+  <footer class="bg-zinc-900 border-t border-zinc-800 text-zinc-500 text-xs py-6 text-center">
+    Exercício 40 - Projeto Completo: Avaliação de Filmes • Desenvolvido com HTML, Tailwind CSS & JS
+  </footer>
+
+  <!-- SCRIPT DE NAVEGAÇÃO E SIMULAÇÃO DE REGRAS DE NEGÓCIO -->
+  <script>
+    function navegarPara(telaId) {
+      const telas = ['home', 'detalhes', 'perfil', 'admin', 'login', 'cadastro'];
+      telas.forEach(t => {
+        const el = document.getElementById(`view-${t}`);
+        if (el) el.classList.add('hidden');
+      });
+
+      const destino = document.getElementById(`view-${telaId}`);
+      if (destino) {
+        destino.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function verDetalhes(titulo, desc, data, poster) {
+      document.getElementById('detalhe-titulo').textContent = titulo;
+      document.getElementById('detalhe-desc').textContent = desc;
+      document.getElementById('detalhe-data').textContent = 'Estreia: ' + data;
+      document.getElementById('detalhe-poster').src = poster;
+      navegarPara('detalhes');
+    }
+
+    function adicionarComentario(e) {
+      e.preventDefault();
+      const nota = document.getElementById('input-nota').value;
+      const texto = document.getElementById('input-comentario').value;
+
+      const container = document.getElementById('lista-comentarios');
+      const novoCard = document.createElement('div');
+      novoCard.className = 'bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex flex-col gap-2';
+      novoCard.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="font-semibold text-sm text-zinc-200">Você (Agora)</span>
+          <span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded">Nota: ${nota} / 10</span>
+        </div>
+        <p class="text-zinc-300 text-sm leading-relaxed">${texto}</p>
+        <div class="flex justify-end pt-2 border-t border-zinc-800/80">
+          <button onclick="alert('Comentário marcado como ofensivo para análise do Administrador.')" class="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1">
+            <i class="fa-regular fa-flag"></i> Sinalizar como ofensivo
+          </button>
+        </div>
+      `;
+      container.prepend(novoCard);
+
+      document.getElementById('input-nota').value = '';
+      document.getElementById('input-comentario').value = '';
+      alert('Avaliação publicada com sucesso!');
+    }
+
+    function alternarBloqueio(id) {
+      const statusEl = document.getElementById(`status-user-${id}`);
+      if (statusEl.textContent.trim() === 'Ativo') {
+        statusEl.textContent = 'Bloqueado';
+        statusEl.className = 'p-3 text-rose-500 text-xs font-semibold';
+        alert('Usuário bloqueado pelo Administrador.');
+      } else {
+        statusEl.textContent = 'Ativo';
+        statusEl.className = 'p-3 text-emerald-400 text-xs font-semibold';
+        alert('Usuário desbloqueado pelo Administrador.');
+      }
+    }
+
+    function resetarSenhaAleatoria(nome) {
+      const senhaAleatoria = Math.random().toString(36).slice(-8);
+      alert(`Senha do usuário ${nome} redefinida para: ${senhaAleatoria}`);
+    }
+  </script>
+</body>
+</html>
